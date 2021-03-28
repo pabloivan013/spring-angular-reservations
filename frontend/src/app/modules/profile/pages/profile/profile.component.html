@@ -1,0 +1,32 @@
+<div class="container-fluid mt-0 mt-md-2">
+  <div class="row justify-content-center">
+    <div class="col-md d-flex justify-content-center justify-content-md-end">
+      <app-profile-card [user]="user"></app-profile-card>
+    </div>
+    <div class="col-md mt-2 mt-md-0 d-flex justify-content-center justify-content-md-start">
+      <a routerLink="/management/business">
+        <button mat-stroked-button color="primary" class="btn">
+          <mat-icon>manage_accounts</mat-icon>
+          Bussines manager
+        </button>
+      </a>
+    </div>
+  </div>
+  <hr class="my-4" />
+  <div class="row">
+    <div class="col-md">
+      <div class="row justify-content-center">
+        <p class="h1 text-break text-center">Personal reservations</p>
+      </div>
+      <div class="row justify-content-center" *ngIf="user.reservations">
+        <div class="col-md">
+            <app-reservation-display
+            class="flex-fill mx-5"
+            style="min-width: 300px"
+            [reservations]="user.reservations"
+          ></app-reservation-display>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>

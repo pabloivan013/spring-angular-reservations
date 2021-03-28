@@ -1,0 +1,116 @@
+<mat-card>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-7 col-md-auto text-center">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Choose a date</mat-label>
+          <input
+            matInput
+            [attr.disabled]="true"
+            (dateChange)="onDateChange($event)"
+            [matDatepickerFilter]="myFilter"
+            [matDatepicker]="picker"
+            [formControl]="datePicked"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            #picker
+            disabled="false"
+            (selectedChanged)="onDateChange($event)"
+          ></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-6 col-md-auto text-center" *ngIf="timePicked">
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <p class="mb-1">
+              <strong>Time picked in the business timezone</strong>
+            </p>
+            <br class="d-none" />
+            {{ timePicked | date: "yyyy-MM-dd hh:mm a": businessTimezoneFormat }}
+            <hr class="my-1" />
+            <p class="mb-1"><strong>Time picked in your timezone</strong></p>
+            <br class="d-none" />
+            {{ correctTimePicked | date: "yyyy-MM-dd hh:mm a" }}
+            <hr class="my-1" />
+            <p class="mb-1"><strong>The reservation will be in</strong></p>
+            <br class="d-none" />
+            <p class="text-wrap">
+              {{ reservationDescription.days }} <strong>Days</strong>,
+              {{ reservationDescription.hours }} <strong>Hours</strong>,
+              {{ reservationDescription.minutes }} <strong>Minutes</strong>
+            </p>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-auto text-center pt-1 pb-2">
+            <button mat-stroked-button color="primary" (click)="confimrTime()">
+              Confirm
+            </button>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col text-center pb-2">
+              <div *ngIf="loadingConfirm; else afterLoadingConfirm">
+                <app-loading></app-loading>
+              </div>
+              <ng-template #afterLoadingConfirm>
+                <strong>{{confirmStatusMessage}}</strong>
+              </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="dayPicked">
+      <div *ngIf="loadingReservations; else afterLoadingReservations">
+        <div class="col text-center">
+          <app-loading [message]="'Loading reservations'"></app-loading>
+        </div>
+      </div>
+      <ng-template #afterLoadingReservations>
+        <div
+          *ngIf="
+            successFetchReservations;
+            else errorFetchReservations
+          "
+        >
+          <div
+            class="col-auto w-100"
+            *ngFor="let opTimes of dayPicked.operationTimes"
+          >
+            <app-reservation-times
+              [operationTime]="opTimes"
+              [datePicked]="date"
+              (onTimePicked)="onTimePicked($event)"
+              [offset]="schedule.offset"
+              [reservationsTaked]="reservations"
+              [businessTimezoneFormat]="businessTimezoneFormat"
+            ></app-reservation-times>
+          </div>
+        </div>
+        <ng-template #errorFetchReservations>
+          <div class="col text-center">
+            <strong>{{errorReservationsMessage}}</strong>
+          </div>    
+        </ng-template>
+      </ng-template>
+    </div>
+    <!-- <div class="row" *ngIf="dayPicked">
+      <div
+        class="col-auto w-100"
+        *ngFor="let opTimes of dayPicked.operationTimes"
+      >
+        <app-reservation-times
+          [operationTime]="opTimes"
+          [datePicked]="date"
+          (onTimePicked)="onTimePicked($event)"
+          [offset]="schedule.offset"
+          [reservationsTaked]="reservations"
+        ></app-reservation-times>
+      </div>
+    </div> -->
+  </div>
+</mat-card>

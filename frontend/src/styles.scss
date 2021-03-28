@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+html, body { 
+  min-height:100vh;
+  margin: 0;
+  padding: 0;
+}
+body {min-height:100vh; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Themes
+@import "~@angular/material/theming";
+@include mat-core();
+
+@import './app/shared/components/header/header.component.scss-theme.scss';
+
+@mixin components-theme($theme){
+  @include app-header-theme($theme);
+}
+
+// Light theme
+$light-primary: mat-palette($mat-light-blue, 500, 500, 900);
+$light-accent : mat-palette($mat-pink);
+$light-warn   : mat-palette($mat-red);
+
+$light-theme:  mat-light-theme(
+  $light-primary,
+  $light-accent,
+  $light-warn
+);
+
+// Dark theme
+$dark-primary: mat-palette($mat-light-blue, A400, A200, A400);
+$dark-accent : mat-palette($mat-pink);
+$dark-warn   : mat-palette($mat-red);
+
+$dark-theme:  mat-dark-theme(
+  $dark-primary,
+  $dark-accent,
+  $dark-warn
+);
+
+.light-theme{
+  @include angular-material-theme($light-theme);
+  @include components-theme($light-theme);
+}
+.dark-theme{
+  @include angular-material-theme($dark-theme);
+  @include components-theme($dark-theme);
+}
+
+// Snackbar
+$success-color: #45e605;
+
+.snackbar{
+    color: white;
+    &.success {
+        background-color: rgb(18, 133, 14);
+    }
+    
+    &.error {
+        background-color: rgb(184, 17, 17);
+    }
+    .mat-simple-snackbar-action {
+        color: white !important;
+    }
+}

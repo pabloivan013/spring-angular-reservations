@@ -1,0 +1,25 @@
+<div class="jumbotron">
+  <h1 class="display-1">Welcome to reservations</h1>
+  <div *ngIf="(auth.isAuthenticated$ | async) === false; else profile">
+    <p class="lead">
+      Login or signup before start creating your own business or making personal
+      reservations
+    </p>
+  </div>
+
+  <ng-template #profile>
+    <div class="row">
+      <div class="col-md-auto">
+        <p class="lead mt-1">
+          <strong>{{ user.nickname }}</strong> visualize your reservations and
+          business in your profile
+        </p>
+      </div>
+      <div class="col-md pt-1 pt-xl-0">
+        <app-profile-button></app-profile-button>
+      </div>
+    </div>
+  </ng-template>
+
+  <hr class="mt-2 mb-4" />
+</div>

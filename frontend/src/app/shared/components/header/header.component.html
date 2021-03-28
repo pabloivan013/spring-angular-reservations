@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-md navbar-light">
+  <div class="container-fluid">
+    <a routerLink="/">
+          <button mat-flat-button color="primary" class="btn">
+            <mat-icon>home</mat-icon>
+            Reservations
+          </button>
+        </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse ms-3" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mt-2 mt-md-0 mb-lg-0">
+        <li class="nav-item ">
+          <app-search></app-search>
+        </li>
+      </ul>
+      <div class="d-flex flex-row">
+        <div class="pt-2">
+          <app-authentication-button></app-authentication-button>
+        </div>
+        <div class="p-2 mt-1">
+          <app-toggle-theme
+            [themeToggleControl]="themeToggleControl"
+          ></app-toggle-theme>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

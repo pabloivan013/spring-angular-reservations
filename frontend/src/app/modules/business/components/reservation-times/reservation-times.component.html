@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col px-0">
+    <div
+      class="example-container mat-elevation-z8 w-100"
+      style="height: 400px; overflow: auto"
+    >
+      <mat-table [dataSource]="reservationDates">
+        <ng-container matColumnDef="dateTime">
+          <mat-header-cell *matHeaderCellDef> Date time </mat-header-cell>
+          <mat-cell class="" *matCellDef="let element">
+            {{ element.date | date: "yyyy-MM-dd hh:mm a" : businessTimezoneFormat}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="options">
+          <mat-header-cell
+            *matHeaderCellDef
+            class="pe-1 d-flex justify-content-center"
+          >
+            <div>Options</div>
+          </mat-header-cell>
+          <mat-cell
+            *matCellDef="let element"
+            class="pe-1 d-flex justify-content-center"
+          >
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="onTimeSelected(element)"
+              [disabled]="!element.valid"
+            >
+              Select
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell
+            *matHeaderCellDef
+            class="pe-1 d-flex justify-content-center"
+          >
+            <div>Status</div>
+          </mat-header-cell>
+          <mat-cell
+            *matCellDef="let element"
+            class="pe-1 d-flex justify-content-center"
+          >
+            {{element.status}}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<mat-card class="d-flex flex-grow-1">
+  <div class="container-fluid p-0">
+    <div class="row">
+      <div class="col">
+        <mat-card-header>
+          <!-- Implement business picture -->
+          <!-- <img mat-card-avatar [src]="" /> -->
+          <mat-card-title
+            ><p class="text-left text-break">
+              {{ reservation.business.name }}
+            </p></mat-card-title
+          >
+          <mat-card-subtitle>
+            <p class="text-left text-break"></p>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <hr class="my-1" />
+        <mat-card-content class="my-0">
+          <div class="row pt-2">
+            <div class="col-md">
+              <p class="mb-1">
+                <strong>Reserved at: </strong> {{ reservation.reservedAt | date: "yyyy-MM-dd hh:mm a"  }}
+              </p>
+              <br class="d-none" />
+              <p class="mb-0">
+                <strong>Time: </strong>
+                {{ description.days }} <strong>Days</strong>
+                {{ description.hours }} <strong>Hours</strong>,
+                {{ description.minutes }} <strong>Minutes</strong>
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <app-loading
+    *ngIf="loadingBusiness; else displayBusiness"
+    [message]="'Loading business'"
+  ></app-loading>
+
+  <ng-template #displayBusiness>
+    <div *ngIf="business; else displayError">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <app-business-description-card
+            [business]="business"
+          ></app-business-description-card>
+        </div>
+      </div>
+      <div class="row mt-4 justify-content-center">
+        <div class="col-12 col-md-6 text-center">
+          <app-reservation-picker-display
+            [businessName]="name"
+            [schedule]="business.schedule"
+          ></app-reservation-picker-display>
+        </div>
+      </div>
+    </div>
+    <ng-template #displayError>
+      <div class="row">
+        <div class="col text-center">
+          <h2>{{ errorMessage }}</h2>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

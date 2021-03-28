@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md">
+        <div class="row">
+            <div class="col-md text-center">
+                <p class="h2 mb-1">Next reservations</p>
+            </div>
+        </div>
+        <div class="row" *ngFor="let nextRes of nextReservations">
+            <div class="col-md p-2">
+                <app-reservation-card [reservation]="nextRes"></app-reservation-card>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="row">
+            <div class="col-md text-center">
+                <p class="h2 mb-1">Past reservations</p>
+            </div> 
+        </div>
+        <div class="row" *ngFor="let pastRes of pastReservations">
+            <div class="col-md p-2">
+                <app-reservation-card [reservation]="pastRes"></app-reservation-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+{
+    "domain": "dev-c67qccov.us.auth0.com",
+    "clientId": "zUXYlQn9AY3GaVQqhooJWRioWf1FmvWi",
+    "audience": "reservations-api",
+    "serverUrl": "http://localhost:3010"
+}

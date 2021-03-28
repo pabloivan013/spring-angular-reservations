@@ -1,0 +1,78 @@
+<div [formGroup]="form">
+  <div formGroupName="schedule">
+    <div formArrayName="days">
+      <div
+        class="row"
+        *ngFor="let day of getDaysControls(schedule); let i = index"
+      >
+        <div [formGroupName]="i">
+          <div class="col-md">
+            <div class="row">
+              <div class="col-md">
+                <mat-checkbox formControlName="open" color="primary" name="day">
+                  {{ WeekDays[day.value.day] }}
+                </mat-checkbox>
+              </div>
+            </div>
+            <div *ngIf="day.value.open">
+              <div formArrayName="operationTimes">
+                <div
+                  class="row"
+                  *ngFor="let ot of getOpTimesControls(day); let i = index"
+                >
+                  <div [formGroupName]="i">
+                    <div class="col-md">
+                      <div class="row">
+                        <div class="col-sm">
+                          <strong>Open time</strong>
+                          <timepicker
+                            [formControl]="ot.controls['start']"
+                          ></timepicker>
+                        </div>
+                        <div class="col-sm">
+                          <strong>Close time</strong>
+                          <timepicker
+                            [formControl]="ot.controls['end']"
+                          ></timepicker>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm">
+                          <strong>Interval time</strong>
+                          <timepicker
+                            [formControl]="ot.controls['interval']"
+                          ></timepicker>
+                        </div>
+                        <div class="col-sm d-flex align-items-center pt-2">
+                          <div *ngIf="ot.invalid && (ot.dirty || ot.touched); else totalReservations">
+                            <div *ngIf="ot.errors?.startBiggerThanEnd">
+                              <p class="font-weight-bold">
+                                <strong>Error:</strong> The <strong>open</strong> time should be less
+                                than the <strong>close</strong> time.
+                              </p>
+                            </div>
+                            <div *ngIf="ot.errors?.invalidIntervalTime">
+                              <p class="font-weight-bold">
+                                <strong>Error:</strong> The <strong>interval time</strong> should be between
+                                the <strong>open</strong> and <strong>close</strong> time.
+                              </p>
+                            </div>
+                          </div>
+                          <ng-template #totalReservations>
+                            <p class="font-weight-bold">
+                              <strong>Total reservations: {{ot.value.totalReservations}}</strong> 
+                            </p>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<a routerLink="/profile">
+  <button *ngIf="stroked"mat-stroked-button color="primary" class="btn">
+    <mat-icon>manage_accounts</mat-icon>
+    Profile
+  </button>
+  <button *ngIf="!stroked"mat-raised-button color="primary" class="btn">
+    <mat-icon>manage_accounts</mat-icon>
+    Profile
+  </button>
+</a>

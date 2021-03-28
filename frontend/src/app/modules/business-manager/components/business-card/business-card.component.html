@@ -1,0 +1,48 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h2 class="mat-h2 my-0">{{ business.name }}</h2>
+      </mat-panel-title>
+      <mat-panel-description> </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-tab-group
+      mat-align-tabs="start"
+      (selectedTabChange)="tabChange($event)"
+    >
+      <mat-tab label="business">
+        <ng-template mat-tab-label>
+          <mat-icon class="me-2">business</mat-icon>
+          Business
+        </ng-template>
+        <div class="container pt-2">
+          <div class="row">
+            <div class="col-md-auto">
+              <h4 class="mat-h4 mat-subheading-1">
+                <p class="font-weight-light">{{ business.description }}</p>
+              </h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-auto">
+              {{ business.schedule | json }}
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="reservations">
+        <ng-template mat-tab-label>
+          <mat-icon class="me-2">event</mat-icon>
+          Reservations
+        </ng-template>
+        <div class="container pt-2">
+          <div class="row align-items-center">
+            <div class="col">
+              <app-reservations-table [businessName]="business.name"></app-reservations-table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group> </mat-expansion-panel
+></mat-accordion>

@@ -1,0 +1,12 @@
+<div
+  class="d-flex flex-row"
+  *ngIf="(auth.isAuthenticated$ | async) === false; else logout"
+>
+  <div class="pe-1 "><app-login-button> </app-login-button></div>
+  <div class="pe-1 "><app-signup-button> </app-signup-button></div>
+</div>
+
+<ng-template #logout>
+  <app-profile-button class="me-2"[stroked]="false"></app-profile-button>
+  <app-logout-button> </app-logout-button>
+</ng-template>

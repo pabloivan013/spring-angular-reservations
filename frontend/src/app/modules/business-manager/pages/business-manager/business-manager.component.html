@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md">
+      <app-business-expansion-panel></app-business-expansion-panel>
+    </div>
+    <div class="col-md text-center">
+      <app-reservations-table></app-reservations-table>
+    </div>
+  </div>
+  <hr class="my-2 mt-3" />
+  <div class="row">
+    <div class="col">
+      <div *ngIf="loadingBusiness; else afterLoading">
+        <app-loading [message]="'Loading business'"></app-loading>
+      </div>
+      <ng-template #afterLoading>
+        <app-business-display
+          *ngIf="user.business"
+          [business]="user.business"
+        ></app-business-display>
+      </ng-template>
+    </div>
+  </div>
+</div>

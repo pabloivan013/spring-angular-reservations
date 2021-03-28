@@ -1,0 +1,105 @@
+<mat-accordion>
+  <mat-expansion-panel [(expanded)]="openExpansionPanel">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Create new business </mat-panel-title>
+      <mat-panel-description> </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form class="" [formGroup]="businessForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-md">
+          <mat-form-field class="w-100 px-2">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              name="name"
+              placeholder=""
+              value=""
+              [errorStateMatcher]="matcher"
+              minlength="5"
+              required
+            />
+            <mat-error *ngIf="name.hasError('required')">
+              Name is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="name.hasError('minlength')">
+              Name must be at least <strong> 5 characters </strong> long
+            </mat-error>
+            <mat-error *ngIf="name.hasError('maxlength')">
+              Name only can have <strong> 60 characters </strong> max
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <mat-form-field class="w-100 px-2">
+            <mat-label>Address</mat-label>
+            <input
+              matInput
+              formControlName="address"
+              name="address"
+              placeholder=""
+              value=""
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md">
+          <mat-form-field class="w-100 px-2">
+            <mat-label>Location</mat-label>
+            <input
+              matInput
+              formControlName="location"
+              name="location"
+              placeholder=""
+              value=""
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <mat-form-field class="w-100 px-2">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              name="description"
+              placeholder=""
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md mx-2">
+          <h3 class="mat-h3 mb-1">Schedule</h3>
+          <app-schedule-form [form]="businessForm" ></app-schedule-form>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-md-auto">
+          <button
+            mat-stroked-button
+            color="primary"
+            type="submit"
+            [disabled]="!businessForm.valid"
+          >
+            Create
+          </button>
+        </div>
+        <div class="col-md-auto ps-md-0 mt-2 mt-md-0">
+          <button type="button" mat-stroked-button color="primary" (click)="resetForm()">
+            Reset
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="loadingBar">
+        <app-loading [message]="'Creating business'"></app-loading>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>

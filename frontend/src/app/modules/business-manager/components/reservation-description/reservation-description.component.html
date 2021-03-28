@@ -1,0 +1,15 @@
+<div class="row pb-2">
+    <div class="col-md">
+            The reservation 
+            <span *ngIf="reservationDescription.datePassed; else notPassed">
+                <strong>was:</strong>
+            </span>
+            <ng-template #notPassed>
+                <strong>will</strong> be in:
+            </ng-template>
+            {{reservationDescription.days}} <strong>days</strong>, 
+            {{reservationDescription.hours}} <strong>hours</strong>, 
+            {{reservationDescription.minutes}} <strong>minutes</strong> 
+            <span *ngIf="reservationDescription.datePassed"> <strong> ago </strong> </span>
+    </div>
+</div>
