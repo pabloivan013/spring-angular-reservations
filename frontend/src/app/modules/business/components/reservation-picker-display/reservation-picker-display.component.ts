@@ -82,23 +82,18 @@ export class ReservationPickerDisplayComponent implements OnInit {
   }
 
   generateTimezone(offset: number){
-    console.log("offset: ", offset)
     let _timezone = offset > 0 ? '-' : '+'
 
     let _offsetHourString = Math.abs(Math.floor(offset / 60)).toString()
     let _offsetMinutesString = (offset % 60).toString()
-    console.log("hour: ", _offsetHourString)
-    console.log("minutes: ", _offsetMinutesString)
+
     _timezone+= _offsetHourString.length < 2 ? '0'.concat(_offsetHourString) : _offsetHourString
     _timezone+= _offsetMinutesString.length < 2 ? '0'.concat(_offsetMinutesString) : _offsetMinutesString
     this.businessTimezoneFormat = _timezone
-    console.log("dateFormat: ", this.businessTimezoneFormat)
 
   }
 
   onTimePicked(time: Date) {
-    console.log("timePicked: ", time)
-    console.log("timePicked JSON: ", JSON.stringify(time))
     this.confirmStatusMessage = ""
     this.timePicked = time
     this.correctTimePicked = new Date(time.getTime())

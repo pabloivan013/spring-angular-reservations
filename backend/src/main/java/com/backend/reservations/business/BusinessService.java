@@ -6,8 +6,9 @@ import java.util.Set;
 
 import com.backend.reservations.utils.ResponseException;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,8 @@ public class BusinessService {
      * @return List<Business>
      */
     public List<Business> getBusinessByNameContaining(String name) {
-        return businessRepository.findByNameContaining(name);
+        Pageable  topFive = PageRequest.of(0, 5);
+        return businessRepository.findByNameLike(name, topFive);
     }
     
     /**

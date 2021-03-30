@@ -147,7 +147,7 @@ public class Business extends AuditModel {
     }
 
 
-
+    // WARNING: getUser() and getReservations() will trigger LAZY LOADING
     @Override
     public String toString() {
         return "{" +

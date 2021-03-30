@@ -22,6 +22,12 @@ export class BusinessService {
     )
   }
 
+  getBusinessContaining(name: string): Observable<Business[]>  {
+    return this.http.get<Business[]>(`${this.PUBLIC}/business?name=${name}`).pipe(
+      map(res => plainToClass(Business, res))
+    )
+  }
+
   getUserBusinessReservations(name: string, start?: Date, end?: Date): Observable<Reservation[]> {
     let startParameter = `start=${start ? start.toISOString() : ''}`
     let endParameter   = `end=${end ? end.toISOString() : ''}`

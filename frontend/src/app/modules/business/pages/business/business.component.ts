@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { Business } from 'src/app/models/business.model';
 import { BusinessService } from 'src/app/services/business.service';
 
@@ -19,30 +19,36 @@ export class BusinessComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private businessService: BusinessService
-    ) { }
+    ) { 
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.name = params.get('name')
+        this.getBusiness()
+      })
+    }
 
   ngOnInit(): void {
-    this.name = this.route.snapshot.paramMap.get('name');
-    this.getBusiness()
+    // this.name = this.route.snapshot.paramMap.get('name');
+    // this.getBusiness()
   }
 
   getBusiness() {
     this.loadingBusiness = true
+    this.business = null
 
-    this.businessService.getBusiness(this.name).subscribe(
-      (business: Business) => {
+    this.businessService.getBusiness(this.name).subscribe({
+      next: (business: Business) => {
         console.log("Business: ", business)
         this.business = business
         this.loadingBusiness = false
       },
-      (error) => {
+      error: (error) => {
         console.log("ERROR getBusiness: ", error)
         this.errorMessage = "Error loading business"
         this.loadingBusiness = false
         if (error.error.status = 404)
-          this.errorMessage = error.error.message
+          this.errorMessage = `Business ${this.name} not found`
       }
-    )
+    })
   }
 
 }

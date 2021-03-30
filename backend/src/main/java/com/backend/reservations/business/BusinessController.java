@@ -72,7 +72,7 @@ public class BusinessController {
             List<Business> _business = businessService.getBusinessByNameContaining(name);
             return new ResponseEntity<>(_business, HttpStatus.OK);
         } catch (Exception e) {
-            String error = "ERROR getUser";
+            String error = "ERROR getBusinessContainingName";
 			HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			if (e instanceof ResponseException)
 				error = e.getMessage();
@@ -81,8 +81,8 @@ public class BusinessController {
     }
 
     /**
-     * returns the business reservations given by his name
-     * @param name
+     * Returns the reservations belonging to the business
+     * @param name : The business name
      * @return ResponseEntity<Set<Reservation>>
      */
     @GetMapping("/business/{name}/reservations")

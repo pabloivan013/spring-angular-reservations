@@ -25,8 +25,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 @RestController
 @RequestMapping("/api/private")
 public class UserController {
-    
-    @Autowired
+
+	@Autowired
 	UserRepository userRepository;
 
 	@Autowired
@@ -42,15 +42,15 @@ public class UserController {
 	// GET /business/:name?queryParams - Get business with query parameters
 
 	// Private
-	// GET  /users/business - get user business (only names)
+	// GET /users/business - get user business (only names)
 	// GET /users/business/:name/reservations get user business with reservations
-	// POST /users/business  - create user business
+	// POST /users/business - create user business
 	// POST /users/reservations?business=<business-name> - create users reservation
 	// GET /users/reservations - get user reservations (with business name)
 
-	//** USER SECTION **/
+	// ** USER SECTION **/
 
-    @GetMapping("/users")
+	@GetMapping("/users")
 	public ResponseEntity<User> getUser(JwtAuthenticationToken jwt) {
 		try {
 			User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
@@ -82,7 +82,7 @@ public class UserController {
 		}
 	}
 
-    @PostMapping("/users-name")
+	@PostMapping("/users-name")
 	@JsonView(View.ExtendedPublic.class)
 	public ResponseEntity<User> createUserByName(@RequestBody User userBody, JwtAuthenticationToken jwt) {
 		try {
@@ -100,7 +100,7 @@ public class UserController {
 		}
 	}
 
-	//** BUSINESS SECTION **/
+	// ** BUSINESS SECTION **/
 
 	@PostMapping("/users/business")
 	@JsonView(View.ExtendedPublic.class)
@@ -135,32 +135,26 @@ public class UserController {
 	}
 
 	/**
-	 * Returns the business reservations reserved in a specific date range
-	 * If the business name its not provided, gets all reservations from all business
+	 * Returns the business reservations reserved in a specific date range If the
+	 * business name its not provided, gets all reservations from all business
+	 * 
 	 * @param business
 	 * @param start
 	 * @param end
 	 * @param jwt
 	 * @return
 	 */
-	@GetMapping("/users/business/reservations") 
+	@GetMapping("/users/business/reservations")
 	@JsonView(View.InternalUserAndBusiness.class) // Returns user data
-	public ResponseEntity<Set<Reservation>> getBusinessReservations(
-		@RequestParam String business,
-		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime start,
-		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime end,
-		JwtAuthenticationToken jwt
-	){
+	public ResponseEntity<Set<Reservation>> getBusinessReservations(@RequestParam String business,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime start,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime end,
+			JwtAuthenticationToken jwt) {
 		try {
 			User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
-			Set<Reservation> _reservations = this.userService
-											.getUserBusinessReservations(
-												userToken, 
-												business, 
-												start, 
-												end
-											);																			
-			return new ResponseEntity<>(_reservations ,HttpStatus.OK);
+			Set<Reservation> _reservations = this.userService.getUserBusinessReservations(userToken, business, start,
+					end);
+			return new ResponseEntity<>(_reservations, HttpStatus.OK);
 		} catch (Exception e) {
 			String error = "ERROR getBusinessReservations";
 			System.out.println("err1: " + e);
@@ -171,24 +165,20 @@ public class UserController {
 		}
 	}
 
-	//** RESERVATION SECTION **/
+	// ** RESERVATION SECTION **/
 
 	// POST /users/reservations?business=<business-name> - create users reservation
 	// GET /users/reservations - get user reservations
 
-	
 	@PostMapping("/users/reservations")
-	@JsonView({View.InternalBusiness.class}) // Returns Business data
-	public ResponseEntity<Reservation> createUserReservation(@RequestBody Reservation reservation ,
-															 @RequestParam String business,
-															  JwtAuthenticationToken jwt) {
+	@JsonView({ View.InternalBusiness.class }) // Returns Business data
+	public ResponseEntity<Reservation> createUserReservation(@RequestBody Reservation reservation,
+			@RequestParam String business, JwtAuthenticationToken jwt) {
 		try {
 			Business _business = new Business();
 			_business.setName(business);
 			User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
-			Reservation _reservation = this.userService.addUserReservation(userToken, 
-																		   reservation, 
-																		   _business);
+			Reservation _reservation = this.userService.addUserReservation(userToken, reservation, _business);
 			return new ResponseEntity<>(_reservation, HttpStatus.CREATED);
 		} catch (Exception e) {
 			String error = "ERROR createUserReservation";

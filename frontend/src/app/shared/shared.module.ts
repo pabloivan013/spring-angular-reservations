@@ -21,7 +21,6 @@ import { SearchComponent } from './components/search/search.component';
 import { ProfileButtonComponent } from './components/auth/profile-button/profile-button.component';
 import { TimepickerComponent } from './components/timepicker/timepicker.component';
 
-
 @NgModule({
   declarations: [
     FooterComponent, 

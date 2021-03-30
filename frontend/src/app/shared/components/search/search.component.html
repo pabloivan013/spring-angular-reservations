@@ -1,11 +1,17 @@
 <form class="d-flex">
   <input
     name="search"
-    [(ngModel)]="search"
     class="form-control me-2"
     type="search"
+    [formControl]="control"
     placeholder="Search"
     aria-label="Search"
+    [matAutocomplete]="auto"
   />
-  <button mat-icon-button><mat-icon>search</mat-icon></button>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let business of businessMatch" [value]="business.name" (click)="gotoBusiness(business.name)">
+      {{business.name}}
+    </mat-option>
+  </mat-autocomplete>
+  <button mat-icon-button (click)="gotoBusiness()"><mat-icon>search</mat-icon></button>
 </form>
