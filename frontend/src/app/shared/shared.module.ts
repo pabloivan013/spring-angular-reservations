@@ -20,6 +20,8 @@ import { SignupButtonComponent } from './components/auth/signup-button/signup-bu
 import { SearchComponent } from './components/search/search.component';
 import { ProfileButtonComponent } from './components/auth/profile-button/profile-button.component';
 import { TimepickerComponent } from './components/timepicker/timepicker.component';
+import { BusinessScheduleDisplayComponent } from './components/business-schedule-display/business-schedule-display.component';
+import { BusinessInfoCardComponent } from './components/business-info-card/business-info-card.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { TimepickerComponent } from './components/timepicker/timepicker.componen
     SignupButtonComponent, 
     SearchComponent, 
     ProfileButtonComponent, 
-    TimepickerComponent
+    TimepickerComponent, 
+    BusinessScheduleDisplayComponent, 
+    BusinessInfoCardComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +62,8 @@ import { TimepickerComponent } from './components/timepicker/timepicker.componen
     SearchComponent,
     ProfileButtonComponent,
     TimepickerComponent,
+    BusinessScheduleDisplayComponent,
+    BusinessInfoCardComponent,
 
     CommonModule,
     MaterialModule,

@@ -15,20 +15,7 @@
           <mat-icon class="me-2">business</mat-icon>
           Business
         </ng-template>
-        <div class="container pt-2">
-          <div class="row">
-            <div class="col-md-auto">
-              <h4 class="mat-h4 mat-subheading-1">
-                <p class="font-weight-light">{{ business.description }}</p>
-              </h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-auto">
-              {{ business.schedule | json }}
-            </div>
-          </div>
-        </div>
+        <app-business-info-card [business]="business"></app-business-info-card>
       </mat-tab>
 
       <mat-tab label="reservations">
@@ -39,7 +26,9 @@
         <div class="container pt-2">
           <div class="row align-items-center">
             <div class="col">
-              <app-reservations-table [businessName]="business.name"></app-reservations-table>
+              <app-reservations-table
+                [businessName]="business.name"
+              ></app-reservations-table>
             </div>
           </div>
         </div>

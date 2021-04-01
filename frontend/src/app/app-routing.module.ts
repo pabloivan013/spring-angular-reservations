@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '@auth0/auth0-angular';
 import { BusinessManagerComponent } from './modules/business-manager/pages/business-manager/business-manager.component';
 import { BusinessComponent } from './modules/business/pages/business/business.component';
 
@@ -20,11 +21,13 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   {
     path: 'management/business',
-    component: BusinessManagerComponent
+    component: BusinessManagerComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '**' , redirectTo: '/'

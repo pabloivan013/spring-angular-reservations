@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public enum WeekDay {
     SUNDAY(0) ,
     MONDAY(1) ,
-    THUESDAY(2),
+    TUESDAY(2),
     WEDNESDAY(3),
     THURSDAY(4),
     FRIDAY(5), 

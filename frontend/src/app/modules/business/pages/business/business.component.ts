@@ -27,8 +27,6 @@ export class BusinessComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    // this.name = this.route.snapshot.paramMap.get('name');
-    // this.getBusiness()
   }
 
   getBusiness() {

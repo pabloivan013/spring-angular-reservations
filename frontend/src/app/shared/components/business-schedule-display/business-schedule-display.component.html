@@ -1,0 +1,26 @@
+<div class="row justify-content-center">
+  <div class="col-auto m-0 p-1" *ngFor="let days of schedule.days">
+    <mat-card class="p-3">
+      <div class="row">
+        <div class="col-md">
+          <strong>{{ days.day }}</strong>
+          <br />
+          <span *ngIf="days.open; else closed"> (open) </span>
+          <ng-template #closed> (closed) </ng-template>
+        </div>
+      </div>
+      <div class="row" *ngFor="let op of days.operationTimes">
+        <hr class="my-1" />
+        <div class="col-md">
+          <strong>Start</strong>
+          <br />
+          {{ op.start | date: "hh:mm a" : timezoneFormat }}
+          <br />
+          <strong>End</strong>
+          <br />
+          {{ op.end | date: "hh:mm a" : timezoneFormat  }}
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -93,22 +93,21 @@ export class ReservationTimesComponent implements OnInit, OnChanges {
     
     // Fill the array of dates with reservation times on business timezone
     // once a time is picked, should be restored adding the substracted offset to match the original UTC
-    let now = new Date(Date.now() - (MS_PER_MINUTE * offset))
+    let now = new Date(Date.now())
     while (_reservation >= start 
           && _reservation.getTime() <= (end.getTime() - intervalTime * MS_PER_MINUTE)
+          && intervalTime > 0
       ) {
         let status = ReservationStatus.AVAILABLE
-        let valid = true
-
-        if (_reservation.getTime() < now.getTime()) {
+        let valid: boolean
+        
+        if (_reservation.getTime() < now.getTime()) 
           status = ReservationStatus.EXPIRED
-          valid = false
-        }
 
-        if(this.containsElement(this.reservationsTaked, _reservation)) {
+        if(this.containsElement(this.reservationsTaked, _reservation)) 
           status = ReservationStatus.TAKED
-          valid = false
-        }
+        
+        valid = (status == ReservationStatus.AVAILABLE) ? true : false
 
         this.reservationDates.push({date:_reservation, valid, status} as TimeInfo)
         _reservation = new Date(_reservation.getTime() + intervalTime * MS_PER_MINUTE)

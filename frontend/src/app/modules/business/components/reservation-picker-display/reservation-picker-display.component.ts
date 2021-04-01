@@ -7,6 +7,7 @@ import { OperationTime } from 'src/app/models/operationTime.model';
 import { ReservationDescription } from 'src/app/models/reservationDescription.model';
 import { Schedule, WeekDays } from 'src/app/models/schedule.model';
 import { BusinessService } from 'src/app/services/business.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { UserService } from 'src/app/services/user.service';
 import { MS_PER_MINUTE } from '../reservation-times/reservation-times.component';
@@ -24,6 +25,17 @@ export function changeDateTimezone(localDate: Date, businessOffset: number, loca
   // Substract business offset to take it to his timezone
   localDate.setTime(localDate.getTime() - (businessOffset * MS_PER_MINUTE))
   return localDate.getTime()
+}
+
+export function generateTimezone(offset: number): string{
+  let _timezone = offset > 0 ? '-' : '+'
+
+  let _offsetHourString = Math.abs(Math.floor(offset / 60)).toString()
+  let _offsetMinutesString = (offset % 60).toString()
+
+  _timezone+= _offsetHourString.length < 2 ? '0'.concat(_offsetHourString) : _offsetHourString
+  _timezone+= _offsetMinutesString.length < 2 ? '0'.concat(_offsetMinutesString) : _offsetMinutesString
+  return  _timezone
 }
 
 @Component({
@@ -71,26 +83,14 @@ export class ReservationPickerDisplayComponent implements OnInit {
   constructor(
     private businessService: BusinessService, 
     private userService: UserService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
-    console.log("schedule: ", this.schedule)
     this.updateOpenDays()
     this.setFilter()
-    this.generateTimezone(this.schedule.offset)
-  }
-
-  generateTimezone(offset: number){
-    let _timezone = offset > 0 ? '-' : '+'
-
-    let _offsetHourString = Math.abs(Math.floor(offset / 60)).toString()
-    let _offsetMinutesString = (offset % 60).toString()
-
-    _timezone+= _offsetHourString.length < 2 ? '0'.concat(_offsetHourString) : _offsetHourString
-    _timezone+= _offsetMinutesString.length < 2 ? '0'.concat(_offsetMinutesString) : _offsetMinutesString
-    this.businessTimezoneFormat = _timezone
-
+    this.businessTimezoneFormat = generateTimezone(this.schedule.offset)
   }
 
   onTimePicked(time: Date) {
@@ -120,6 +120,11 @@ export class ReservationPickerDisplayComponent implements OnInit {
   }
 
   confimrTime() {
+    if (!this.sharedService.authenticated) {
+      this.snackbarService.error("Login before creating a reservation")
+      return
+    }
+
     let _reservation = new Reservation()
     _reservation.reservedAt = this.timePicked
     _reservation.day = this.dayPicked.day
@@ -137,6 +142,7 @@ export class ReservationPickerDisplayComponent implements OnInit {
       },
       (error) => {
         console.log("ERROR create reservation: ", error)
+        console.log("ERROR create reservation2: ", JSON.stringify(error))
         this.loadingConfirm = false
         this.confirmStatusMessage = "Error creating reservation"
         this.snackbarService.error("Error creating reservation: " + error.error.message)

@@ -33,10 +33,10 @@ export class BusinessManagerComponent implements OnInit {
   getUserBusiness() {
     this.loadingBusiness = true
     this.userService.getUserBusiness().subscribe(
-      (busines: Business[]) => {
-        console.log("BUSINESS: ", busines)
+      (business: Business[]) => {
+        console.log("BUSINESS: ", business)
         this.loadingBusiness = false
-        this.user.business = busines
+        this.user.business = business
       },
       (error) => {
         console.log("ERROR getUserBusiness: ", error)

@@ -7,10 +7,10 @@
   <ng-template #displayBusiness>
     <div *ngIf="business; else displayError">
       <div class="row justify-content-center">
-        <div class="col-md-8">
-          <app-business-description-card
+        <div class="col-md-9">
+          <app-business-info-card
             [business]="business"
-          ></app-business-description-card>
+          ></app-business-info-card>
         </div>
       </div>
       <div class="row mt-4 justify-content-center">
