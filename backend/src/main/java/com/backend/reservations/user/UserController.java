@@ -135,8 +135,8 @@ public class UserController {
 	}
 
 	/**
-	 * Returns the business reservations reserved in a specific date range If the
-	 * business name its not provided, gets all reservations from all business
+	 * Returns the business reservations reserved in a specific date range
+	 * If the business name its not provided, gets all reservations from all business
 	 * 
 	 * @param business
 	 * @param start
