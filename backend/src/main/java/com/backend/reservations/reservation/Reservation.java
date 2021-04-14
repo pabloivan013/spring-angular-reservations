@@ -69,7 +69,6 @@ public class Reservation extends AuditModel {
     }
 
     public Boolean isValid(Schedule schedule) {
-        System.out.println("DAT RES: " + this.day);
         for(Day d : schedule.getDays()) {
             if (d.getDay() == this.getDay() && d.isOpen()) {
                 for (OperationTime ot: d.getOperationTimes()) {

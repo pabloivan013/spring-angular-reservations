@@ -41,20 +41,6 @@ public class BusinessService {
     }
     
     /**
-     * Returns a business given by a name with his reservations in a specific date
-     * @param name
-     * @param start
-     * @param end
-     * @return Business
-     * @throws ResponseException
-     */
-    public Business getBusinessByNameWithReservations(String name, Date start, Date end) throws ResponseException {
-        return businessRepository.findByNameAndReservationDate(name, start, end).map(b -> {
-            return b;
-        }).orElseThrow(()-> new ResponseException("Bussines not found"));
-    }
-
-    /**
      * Returns the bussines created by a user
      * @param sub
      * @return Set<Business>
@@ -63,20 +49,6 @@ public class BusinessService {
         return businessRepository.FindByUserSub(sub);
     }
 
-    /**
-     * Returns a business by his name belonging to a user
-     * @param name
-     * @param sub
-     * @return Business
-     * @throws ResponseException
-     */
-    public Business getBusinessByNameAndUserSub(String name, String sub) throws ResponseException {
-        return this.businessRepository.findByNameAndUser_Sub(name, sub).map(b -> {
-            return b;
-        }).orElseThrow(()-> new ResponseException("Bussines not found"));
-    }
-
-    
     /**
      * Validates the business creation data
      * @param business
@@ -94,7 +66,6 @@ public class BusinessService {
 
         // Schedule validation
         business.getSchedule().validate();
-        
     }
 
     /**
@@ -106,6 +77,36 @@ public class BusinessService {
     public Business addBusiness(Business business) throws ResponseException{
         this.validateBusiness(business);
         return this.businessRepository.save(business);
+    }
+
+
+    /** Out of service Methods **/
+
+    /**
+     * Returns a business given by a name with his reservations in a specific date
+     * @param name
+     * @param start
+     * @param end
+     * @return Business
+     * @throws ResponseException
+     */
+    public Business getBusinessByNameWithReservations(String name, Date start, Date end) throws ResponseException {
+        return businessRepository.findByNameAndReservationDate(name, start, end).map(b -> {
+            return b;
+        }).orElseThrow(()-> new ResponseException("Bussines not found"));
+    }
+
+    /**
+     * Returns a business by his name belonging to a user
+     * @param name
+     * @param sub
+     * @return Business
+     * @throws ResponseException
+     */
+    public Business getBusinessByNameAndUserSub(String name, String sub) throws ResponseException {
+        return this.businessRepository.findByNameAndUser_Sub(name, sub).map(b -> {
+            return b;
+        }).orElseThrow(()-> new ResponseException("Bussines not found"));
     }
 
 }

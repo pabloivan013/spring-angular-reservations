@@ -97,7 +97,7 @@ public class BusinessController {
                                              .getReservationsByDateAndBusinessName(name, start, end);
             return new ResponseEntity<>(_reservations, HttpStatus.OK);
         } catch (Exception e) {
-            String error = "ERROR getUser";
+            String error = "ERROR getBusinessReservations";
 			HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			if (e instanceof ResponseException)
 				error = e.getMessage();

@@ -86,15 +86,15 @@ public class ReservationService {
         
         if ( end == null)
             end = LocalDateTime.of(99999, 1, 1, 0, 0);
-
-        System.out.println("start1: " + start);
-        System.out.println("end1: " + end);
-        
+    
         if (business != null  && business.length() > 0)
             return this.reservationRepository.FindByBusinessNameFromUserSubRangeDate(sub, business, start, end);
         else
             return this.reservationRepository.FindByUserSubOnRangeDate(sub, start, end);
     }
+
+
+    /** Public **/
 
     /**
      * Returns the reservations of a business in a specific range date
