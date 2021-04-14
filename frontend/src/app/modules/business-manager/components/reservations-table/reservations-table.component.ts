@@ -26,7 +26,7 @@ export class ReservationsTableComponent implements OnInit {
 
   @Input() businessName: string = ''
 
-  columnsToDisplay: string[] = ['createdAt', 'email', 'reservedAt'];
+  columnsToDisplay: string[] = ['reservedAt', 'email', 'createdAt'];
   dataSource: MatTableDataSource<Reservation> = new MatTableDataSource<Reservation>()
 
   expandedElement: Reservation | null;

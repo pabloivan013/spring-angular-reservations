@@ -46,7 +46,6 @@ export class UserService {
     let startParameter = `start=${start ? start.toISOString() : ''}`
     let endParameter   = `end=${end ? end.toISOString() : ''}`
     let url = `${this.PRIVATE}/users/business/reservations?business=${business}&${startParameter}&${endParameter}`
-    console.log("url: ", url)
     return this.http.get<Reservation[]>(url).pipe(
       map(res => plainToClass(Reservation, res))
     )
