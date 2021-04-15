@@ -1,2 +1,6 @@
 ### VS Code ###
 .vscode/
+
+### Database ###
+
+backend/src/main/resources/database.properties
