@@ -1,3 +1,9 @@
+import { auth } from './auth'
+
 export const environment = {
-  production: true
+  production: true,
+  auth,
+  dev: {
+    serverUrl:'',
+  },
 };
