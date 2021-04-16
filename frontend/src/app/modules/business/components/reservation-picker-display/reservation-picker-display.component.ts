@@ -128,11 +128,10 @@ export class ReservationPickerDisplayComponent implements OnInit {
     let _reservation = new Reservation()
     _reservation.reservedAt = this.timePicked
     _reservation.day = this.dayPicked.day
-    console.log("_reservation: ", _reservation)
+   
     this.loadingConfirm = true
     this.userService.createUserReservation(_reservation, this.businessName).subscribe(
       (reservation: Reservation) => {
-        console.log("Confirm time reservation: ", reservation)
         this.reservations.push(reservation)
         // Force ngOnChanges trigger in reservation-time component, (Changes array reference)
         this.reservations = this.reservations.slice(0)
@@ -151,8 +150,7 @@ export class ReservationPickerDisplayComponent implements OnInit {
   }
 
   onDateChange($event) {
-    console.log("date: ", this.date)
-
+   
     let start = new Date(this.date)
 
     // Set start UTC to the business UTC
@@ -174,7 +172,6 @@ export class ReservationPickerDisplayComponent implements OnInit {
     this.loadingReservations = true
     this.businessService.getUserBusinessReservations(this.businessName, start, end).subscribe(
       (reservations: Reservation[]) => {
-        console.log("Reservations: ", reservations)
         this.loadingReservations = false
         this.successFetchReservations = true
         this.reservations = reservations

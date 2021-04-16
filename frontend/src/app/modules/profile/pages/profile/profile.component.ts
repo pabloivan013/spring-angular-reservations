@@ -42,7 +42,6 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserReservations().subscribe(
       (reservations: Reservation[]) => {
         this.user.reservations = reservations
-        console.log("reservations: ",this.user.reservations)
       },
       (error) => {
         console.log("ERROR getUserReservations: ", error)

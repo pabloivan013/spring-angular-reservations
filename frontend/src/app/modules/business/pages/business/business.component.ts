@@ -35,7 +35,6 @@ export class BusinessComponent implements OnInit {
 
     this.businessService.getBusiness(this.name).subscribe({
       next: (business: Business) => {
-        console.log("Business: ", business)
         this.business = business
         this.loadingBusiness = false
       },

@@ -82,17 +82,15 @@ export class ReservationTimesComponent implements OnInit, OnChanges {
 
     start.setUTCHours(startOriginal.getUTCHours(), startOriginal.getUTCMinutes())
 
-    console.log("start before:", JSON.stringify(start))
     // Restore original UTC
     start.setTime(start.getTime() + (MS_PER_MINUTE * offset))
-    console.log("start after:", JSON.stringify(start))
+    
     let diff = Math.abs(startOriginal.getTime() - endOriginal.getTime())
     let end = new Date(start.getTime() + diff )
     
     let _reservation = new Date(start)
     
     // Fill the array of dates with reservation times on business timezone
-    // once a time is picked, should be restored adding the substracted offset to match the original UTC
     let now = new Date(Date.now())
     while (_reservation >= start 
           && _reservation.getTime() <= (end.getTime() - intervalTime * MS_PER_MINUTE)
@@ -112,7 +110,6 @@ export class ReservationTimesComponent implements OnInit, OnChanges {
         this.reservationDates.push({date:_reservation, valid, status} as TimeInfo)
         _reservation = new Date(_reservation.getTime() + intervalTime * MS_PER_MINUTE)
     }
-    console.log("res: ", this.reservationDates)
   }
 
 }

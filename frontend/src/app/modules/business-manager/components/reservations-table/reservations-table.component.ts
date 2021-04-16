@@ -62,17 +62,9 @@ export class ReservationsTableComponent implements OnInit {
       this.columnsToDisplay.push("business")
   }
 
-  tabChange($event: MatTabChangeEvent) {
-    console.log("event: ", $event)
-    if ($event.tab.textLabel == 'reservations') {
-      this.fetchReservations()
-    }
-  }
-
   fetchReservations() {
     this.userService.getUserBusinessReservations(this.businessName, this.start, this.end).subscribe(
       (reservations: Reservation[]) => {
-        console.log("Reservations: ", reservations)
         this.dataSource.data = reservations
       },
       (error) => {

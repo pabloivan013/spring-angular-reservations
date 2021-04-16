@@ -23,7 +23,7 @@ export class BusinessManagerComponent implements OnInit {
     public auth: AuthService, 
     private sharedService: SharedService, 
     private userService: UserService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.user = this.sharedService.getUser();
@@ -34,7 +34,6 @@ export class BusinessManagerComponent implements OnInit {
     this.loadingBusiness = true
     this.userService.getUserBusiness().subscribe(
       (business: Business[]) => {
-        console.log("BUSINESS: ", business)
         this.loadingBusiness = false
         this.user.business = business
       },

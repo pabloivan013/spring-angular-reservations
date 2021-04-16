@@ -154,13 +154,10 @@ export class BusinessExpansionPanelComponent implements OnInit {
 
     this.loadingBar = true
     let _business = plainToClass(Business, this.businessForm.value)
- 
     _business.schedule.offset = new Date().getTimezoneOffset()
-    console.log("SUBMIT BUSINESS: ", _business)
-    
+
     this.userService.createUserBusiness(_business).subscribe(
       (business: Business) => {
-        console.log("Business created: ", business)
         this.user.business.unshift(business)
         this.loadingBar = false
         this.resetForm()
