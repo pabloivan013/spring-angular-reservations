@@ -15,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:database.properties")
 public class DatabaseConfig {
+
     @Value("${db.url}")
     private String url;
     
@@ -33,11 +34,5 @@ public class DatabaseConfig {
 
         return new HikariDataSource(config);
     }
-
-    // @Bean
-    // public Connection getConnection() throws URISyntaxException, SQLException {
-    //     return DriverManager.getConnection(url, username, password);
-    // }
-
-    
+  
 }
