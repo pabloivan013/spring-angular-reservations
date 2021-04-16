@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import com.backend.reservations.business.Business;
 import com.backend.reservations.business.BusinessService;
 import com.backend.reservations.reservation.Reservation;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Transactional
 public class UserService {
 
     static final int USERNAME_MIN_LENGTH = 5;

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import com.backend.reservations.utils.ResponseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
+@Transactional
 public class BusinessService {
 
     @Autowired
@@ -41,7 +44,7 @@ public class BusinessService {
     }
     
     /**
-     * Returns the bussines created by a user
+     * Returns the business created by a user
      * @param sub
      * @return Set<Business>
      */
@@ -54,7 +57,7 @@ public class BusinessService {
      * @param business
      * @throws ResponseException
      */
-    public void validateBusiness(Business business) throws ResponseException {
+    private void validateBusiness(Business business) throws ResponseException {
         if (business.getName() == null)
             throw new ResponseException("Business name is required");
 
