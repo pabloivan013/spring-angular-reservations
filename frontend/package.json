@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port 4040 --open",
     "build": "ng build",
+    "production": "ng build --prod && gulp dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

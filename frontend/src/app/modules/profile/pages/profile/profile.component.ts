@@ -23,19 +23,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.shared.getUser();
-    this.getUserBusiness();
     this.getUserReservations();
-  }
-
-  getUserBusiness() {
-    this.userService.getUserBusiness().subscribe(
-      (busines: Business[]) => {
-        this.user.business = busines
-      },
-      (error) => {
-        console.log("ERROR getUserBusiness: ", error)
-      }
-    )
   }
 
   getUserReservations() {
