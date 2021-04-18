@@ -74,19 +74,27 @@ export class ReservationTimesComponent implements OnInit, OnChanges {
       this.datePicked.getMonth(), 
       this.datePicked.getDate()
     ))
-    
+
+    let end = new Date(Date.UTC(
+      this.datePicked.getFullYear(),
+      this.datePicked.getMonth(), 
+      this.datePicked.getDate()
+    ))
+
     // Take dates to the original business timezone, substract the offset
     // This will make show the UTC time like the original business timezone
     let startOriginal = new Date(this.operationTime.start.getTime() - (MS_PER_MINUTE * offset))
     let endOriginal   = new Date(this.operationTime.end.getTime() - (MS_PER_MINUTE * offset))
 
     start.setUTCHours(startOriginal.getUTCHours(), startOriginal.getUTCMinutes())
+    end.setUTCHours(endOriginal.getUTCHours(), endOriginal.getUTCMinutes())
 
     // Restore original UTC
     start.setTime(start.getTime() + (MS_PER_MINUTE * offset))
-    
-    let diff = Math.abs(startOriginal.getTime() - endOriginal.getTime())
-    let end = new Date(start.getTime() + diff )
+    end.setTime(end.getTime() + (MS_PER_MINUTE * offset))
+
+    //let diff = Math.abs(startOriginal.getTime() - endOriginal.getTime())
+    //let end = new Date(start.getTime() + diff )
     
     let _reservation = new Date(start)
     
