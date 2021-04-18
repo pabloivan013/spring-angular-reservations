@@ -1,5 +1,7 @@
 package com.backend.reservations.utils.models;
 
+import java.sql.Date;
+
 //import java.sql.LocalDateTime;
 
 import java.time.LocalDateTime;
@@ -43,13 +45,29 @@ public class OperationTime {
         this.end   = DateUtils.truncateDate(this.end);
     }
 
-    public void validate() throws ResponseException {
+    /**
+     * 
+     * @param offset The business offset
+     * @throws ResponseException
+     */
+    public void validate(int offset) throws ResponseException {
+        // Subtracts business offset to take it to 00:00 - 23:59
+        // And make them to be on the same day
+        LocalDateTime _start = this.start.minusMinutes(offset);
+        LocalDateTime _end   = this.end.minusMinutes(offset);
+
+
+        // Verifies if the dates are not the same
+        if (!_start.truncatedTo(ChronoUnit.DAYS).equals(_end.truncatedTo(ChronoUnit.DAYS)))
+            throw new ResponseException("START and END dates must be the same day");
         
-        if (this.start.isAfter(this.end) || this.start.isEqual(this.end))
+        int _startMinutes = DateUtils.calculateMinutes(_start);
+        int _endMinutes   = DateUtils.calculateMinutes(_end);
+
+        if (_startMinutes >= _endMinutes)
             throw new ResponseException("The open time should be less than the close time");
-        
-        long diff = ChronoUnit.MINUTES.between(this.start, this.end);
-        System.out.println("DIFF: " + diff);
+
+        long diff = Math.abs(_endMinutes - _startMinutes);
         
         if (this.intervalTime <= 0 || this.intervalTime > diff)
             throw new ResponseException("The interval time should be between the open and close time.");

@@ -30,7 +30,7 @@ public class Schedule {
             if (d.open) {
                 for(OperationTime ot : d.operationTimes) {
                     ot.truncateStartEndDates();
-                    ot.validate();
+                    ot.validate(offset);
                 }
             }
         }
