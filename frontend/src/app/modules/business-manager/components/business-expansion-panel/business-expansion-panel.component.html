@@ -29,6 +29,9 @@
             <mat-error *ngIf="name.hasError('maxlength')">
               Name only can have <strong> 60 characters </strong> max
             </mat-error>
+            <mat-error *ngIf="name.hasError('pattern')">
+              Name should only contain letters and numbers.
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
