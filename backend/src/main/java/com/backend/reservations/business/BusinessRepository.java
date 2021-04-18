@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BusinessRepository extends JpaRepository<Business, Long> {
-    Optional<Business> findFirstByName(String name);
+    Optional<Business> findFirstByNameIgnoreCase(String name);
   
     @Query("SELECT b FROM Business b WHERE UPPER(b.name) LIKE CONCAT('%',UPPER(:name),'%') ")
     List<Business> findByNameLike(@Param("name") String name, Pageable pageable);

@@ -69,7 +69,7 @@ public class BusinessController {
     @JsonView(View.Public.class)
 	public ResponseEntity<List<Business>> getBusinessContainingName(@RequestParam String name) {
         try {
-            List<Business> _business = businessService.getBusinessByNameContaining(name);
+            List<Business> _business = businessService.getBusinessByNameContainingIgnoreCase(name);
             return new ResponseEntity<>(_business, HttpStatus.OK);
         } catch (Exception e) {
             String error = "ERROR getBusinessContainingName";

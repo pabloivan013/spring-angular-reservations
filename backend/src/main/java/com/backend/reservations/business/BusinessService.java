@@ -28,7 +28,7 @@ public class BusinessService {
      * @throws ResponseException
      */
     public Business getBusiness(Business business) throws ResponseException {
-        return businessRepository.findFirstByName(business.getName()).map(b -> {
+        return businessRepository.findFirstByNameIgnoreCase(business.getName()).map(b -> {
             return b;
         }).orElseThrow(() -> new ResponseException("Business name not found", HttpStatus.NOT_FOUND));
     }
@@ -38,7 +38,7 @@ public class BusinessService {
      * @param name
      * @return List<Business>
      */
-    public List<Business> getBusinessByNameContaining(String name) {
+    public List<Business> getBusinessByNameContainingIgnoreCase(String name) {
         Pageable  topFive = PageRequest.of(0, 5);
         return businessRepository.findByNameLike(name, topFive);
     }
@@ -63,8 +63,12 @@ public class BusinessService {
 
         if (business.getName().length() < 5 || business.getName().length() > 20)
             throw new ResponseException("The business name should be between 5 and 20 characters");
-            
-        if (businessRepository.findFirstByName(business.getName()).isPresent())
+         
+        if (!business.getName().matches("^[A-Za-z0-9]+$"))
+            throw new ResponseException("The business name can contain only characters and numbers");
+        
+
+        if (businessRepository.findFirstByNameIgnoreCase(business.getName()).isPresent())
             throw new ResponseException("Business name taked");
 
         // Schedule validation
