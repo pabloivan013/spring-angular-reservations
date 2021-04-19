@@ -20,15 +20,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/public")
 public class BusinessController {
-    
+
     // GET /business/:name - Get business (return taked reservations)
-	// GET /business/:name?queryParams - Get business with query parameters
+    // GET /business/:name?queryParams - Get business with query parameters
 
     @Autowired
     BusinessService businessService;
@@ -38,71 +37,46 @@ public class BusinessController {
 
     /**
      * Retunrs a business by his name, or throw exception if not found.
+     * 
      * @param name
      * @return ResponseEntity<Business>
+     * @throws ResponseException
      */
     @GetMapping("/business/{name}")
     @JsonView(View.Public.class)
-	public ResponseEntity<Business> getBusiness(@PathVariable String name) {
-        try {
-            Business _business = new Business();
-            _business.setName(name);
-            _business = this.businessService.getBusiness(_business);
-            return new ResponseEntity<>(_business, HttpStatus.OK);
-        } catch (Exception e) {
-            String error = "ERROR getBusiness";
-			HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			if (e instanceof ResponseException) {
-                error = e.getMessage();
-                httpStatus = ((ResponseException) e).getCode();
-            }	
-			throw new ResponseStatusException(httpStatus, error);
-        }
+    public ResponseEntity<Business> getBusiness(@PathVariable String name) throws ResponseException {
+        Business _business = new Business();
+        _business.setName(name);
+        _business = this.businessService.getBusiness(_business);
+        return new ResponseEntity<>(_business, HttpStatus.OK);
     }
 
     /**
      * Returns a list of bussines containing in his name the request parameter
+     * 
      * @param name
      * @return ResponseEntity<List<Business>>
      */
     @GetMapping("/business")
     @JsonView(View.Public.class)
-	public ResponseEntity<List<Business>> getBusinessContainingName(@RequestParam String name) {
-        try {
-            List<Business> _business = businessService.getBusinessByNameContainingIgnoreCase(name);
-            return new ResponseEntity<>(_business, HttpStatus.OK);
-        } catch (Exception e) {
-            String error = "ERROR getBusinessContainingName";
-			HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			if (e instanceof ResponseException)
-				error = e.getMessage();
-			throw new ResponseStatusException(httpStatus, error);
-        }
+    public ResponseEntity<List<Business>> getBusinessContainingName(@RequestParam String name) {
+        List<Business> _business = businessService.getBusinessByNameContainingIgnoreCase(name);
+        return new ResponseEntity<>(_business, HttpStatus.OK);
     }
 
     /**
      * Returns the reservations belonging to the business
+     * 
      * @param name : The business name
      * @return ResponseEntity<Set<Reservation>>
      */
     @GetMapping("/business/{name}/reservations")
     @JsonView(View.InternalReservation.class)
-	public ResponseEntity<Set<Reservation>> getBusinessReservations(
-        @PathVariable String name,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime start,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime end
-    ) {
-        try {
-            Set<Reservation> _reservations = reservationService
-                                             .getReservationsByDateAndBusinessName(name, start, end);
-            return new ResponseEntity<>(_reservations, HttpStatus.OK);
-        } catch (Exception e) {
-            String error = "ERROR getBusinessReservations";
-			HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			if (e instanceof ResponseException)
-				error = e.getMessage();
-			throw new ResponseStatusException(httpStatus, error);
-        }
+    public ResponseEntity<Set<Reservation>> getBusinessReservations(@PathVariable String name,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") LocalDateTime end) {
+        Set<Reservation> _reservations = reservationService.getReservationsByDateAndBusinessName(name, start, end);
+        return new ResponseEntity<>(_reservations, HttpStatus.OK);
     }
 
 }

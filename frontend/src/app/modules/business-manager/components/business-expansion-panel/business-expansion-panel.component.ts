@@ -171,7 +171,7 @@ export class BusinessExpansionPanelComponent implements OnInit {
       (error) => {
         console.log("ERROR business creation: ", error)
         this.loadingBar = false
-        this.snackbarService.error(`Error creating business: ${error.error.message}`)
+        this.snackbarService.error(`Error creating business: ${error.error}`)
       }
     )
   }
