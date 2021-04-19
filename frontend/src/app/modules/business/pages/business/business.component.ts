@@ -42,7 +42,7 @@ export class BusinessComponent implements OnInit {
         console.log("ERROR getBusiness: ", error)
         this.errorMessage = "Error loading business"
         this.loadingBusiness = false
-        if (error.error.status = 404)
+        if (error.status == 404)
           this.errorMessage = `Business ${this.name} not found`
       }
     })
