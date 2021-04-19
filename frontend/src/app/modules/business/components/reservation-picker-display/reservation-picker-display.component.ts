@@ -142,8 +142,8 @@ export class ReservationPickerDisplayComponent implements OnInit {
       (error) => {
         console.log("ERROR createUserReservation: ", error)
         this.loadingConfirm = false
-        this.confirmStatusMessage = error.error
-        this.snackbarService.error("Error creating reservation: " + error.error)
+        this.confirmStatusMessage = error.error.message
+        this.snackbarService.error("Error creating reservation: " + error.error.message)
       }
     )
   }
