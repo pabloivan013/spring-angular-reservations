@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import com.backend.reservations.business.Business;
 import com.backend.reservations.business.BusinessService;
 import com.backend.reservations.reservation.Reservation;
@@ -15,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -89,6 +88,7 @@ public class UserService {
      * @return Set<Business>
      * @throws ResponseException
      */
+    @Transactional(readOnly = true)
     public Set<Business> getUserBusiness(User user) throws ResponseException {
         return businessService.getBusinessByUserSub(user.getSub());
         //return this.getUser(user).getBusiness();
@@ -101,6 +101,7 @@ public class UserService {
      * @param business
      * @return Set<Reservation>
      */
+    @Transactional(readOnly = true)
     public Set<Reservation> getUserBusinessReservations(
         User user, 
         String business, 
@@ -136,6 +137,7 @@ public class UserService {
      * @return Set<Reservation>
      * @throws ResponseException
      */
+    @Transactional(readOnly = true)
     public Set<Reservation> getUserReservations(User user) throws ResponseException {
         return reservationService.getReservationsByUserSub(user.getSub());
     }

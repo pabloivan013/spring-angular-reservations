@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import com.backend.reservations.utils.ResponseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -38,6 +37,7 @@ public class BusinessService {
      * @param name
      * @return List<Business>
      */
+    @Transactional(readOnly = true)
     public List<Business> getBusinessByNameContainingIgnoreCase(String name) {
         Pageable  topFive = PageRequest.of(0, 5);
         return businessRepository.findByNameLike(name, topFive);

@@ -3,14 +3,13 @@ package com.backend.reservations.reservation;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import com.backend.reservations.utils.ResponseException;
 import com.backend.reservations.utils.models.Schedule;
 import com.backend.reservations.utils.models.WeekDay;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
