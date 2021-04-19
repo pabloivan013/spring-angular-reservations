@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.backend.reservations.business.Business;
 import com.backend.reservations.reservation.Reservation;
-import com.backend.reservations.utils.ResponseException;
+
 import com.backend.reservations.utils.View;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -50,7 +50,7 @@ public class UserController {
 	// ** USER SECTION **/
 
 	@GetMapping("/users")
-	public ResponseEntity<User> getUser(JwtAuthenticationToken jwt) throws ResponseException {
+	public ResponseEntity<User> getUser(JwtAuthenticationToken jwt) {
 		User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
 		User _user = userService.getUser(userToken);
 		return new ResponseEntity<>(_user, HttpStatus.OK);
@@ -67,7 +67,7 @@ public class UserController {
 
 	@PostMapping("/users-name")
 	@JsonView(View.ExtendedPublic.class)
-	public ResponseEntity<User> createUserByName(@RequestBody User userBody, JwtAuthenticationToken jwt) throws ResponseException {
+	public ResponseEntity<User> createUserByName(@RequestBody User userBody, JwtAuthenticationToken jwt) {
 		User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
 		userToken.setUsername(userBody.getUsername());
 		User _user = this.userService.createUpdateUserByName(userToken);
@@ -79,15 +79,16 @@ public class UserController {
 
 	@PostMapping("/users/business")
 	@JsonView(View.ExtendedPublic.class)
-	public ResponseEntity<Business> createUserBusiness(@RequestBody Business business, JwtAuthenticationToken jwt) throws ResponseException {
+	public ResponseEntity<Business> createUserBusiness(@RequestBody Business business, JwtAuthenticationToken jwt) {
 		User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
+		//throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"bar reqq");
 		Business _business = this.userService.addUserBusiness(userToken, business);
 		return new ResponseEntity<>(_business, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/users/business")
 	@JsonView(View.Public.class)
-	public ResponseEntity<Set<Business>> getUserBusiness(JwtAuthenticationToken jwt) throws ResponseException {
+	public ResponseEntity<Set<Business>> getUserBusiness(JwtAuthenticationToken jwt) {
 		User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
 		Set<Business> _business = this.userService.getUserBusiness(userToken);
 		return new ResponseEntity<>(_business, HttpStatus.OK);
@@ -123,7 +124,7 @@ public class UserController {
 	@PostMapping("/users/reservations")
 	@JsonView({ View.InternalBusiness.class }) // Returns Business data
 	public ResponseEntity<Reservation> createUserReservation(@RequestBody Reservation reservation,
-			@RequestParam String business, JwtAuthenticationToken jwt) throws ResponseException {
+			@RequestParam String business, JwtAuthenticationToken jwt) {
 			Business _business = new Business();
 			_business.setName(business);
 			User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
@@ -133,7 +134,7 @@ public class UserController {
 
 	@GetMapping("/users/reservations")
 	@JsonView(View.InternalBusiness.class) // Returns Business data
-	public ResponseEntity<Set<Reservation>> getUserReservations(JwtAuthenticationToken jwt) throws ResponseException {
+	public ResponseEntity<Set<Reservation>> getUserReservations(JwtAuthenticationToken jwt) {
 			User userToken = objectMapper.convertValue(jwt.getTokenAttributes(), User.class);
 			Set<Reservation> _reservations = this.userService.getUserReservations(userToken);
 			return new ResponseEntity<>(_reservations, HttpStatus.OK);

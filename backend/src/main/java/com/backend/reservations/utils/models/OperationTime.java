@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import com.backend.reservations.utils.DateUtils;
-import com.backend.reservations.utils.ResponseException;
 import com.backend.reservations.utils.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public class OperationTime {
 
@@ -44,9 +46,8 @@ public class OperationTime {
     /**
      * 
      * @param offset The business offset
-     * @throws ResponseException
      */
-    public void validate(int offset) throws ResponseException {
+    public void validate(int offset) {
         // Subtracts business offset to take it to 00:00 - 23:59
         // And make them to be on the same day
         LocalDateTime _start = this.start.minusMinutes(offset);
@@ -55,18 +56,18 @@ public class OperationTime {
 
         // Verifies if the dates are not the same
         if (!_start.truncatedTo(ChronoUnit.DAYS).equals(_end.truncatedTo(ChronoUnit.DAYS)))
-            throw new ResponseException("START and END dates must be the same day");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "START and END dates must be the same day");
         
         int _startMinutes = DateUtils.calculateMinutes(_start);
         int _endMinutes   = DateUtils.calculateMinutes(_end);
 
         if (_startMinutes >= _endMinutes)
-            throw new ResponseException("The open time should be less than the close time");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The open time should be less than the close time");
 
         long diff = Math.abs(_endMinutes - _startMinutes);
         
         if (this.intervalTime <= 0 || this.intervalTime > diff)
-            throw new ResponseException("The interval time should be between the open and close time.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The interval time should be between the open and close time.");
 
     }
 

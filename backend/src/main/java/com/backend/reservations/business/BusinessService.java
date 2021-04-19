@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import com.backend.reservations.utils.ResponseException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @Transactional
@@ -24,12 +23,11 @@ public class BusinessService {
      * Returns a business by his name
      * @param business
      * @return Business
-     * @throws ResponseException
      */
-    public Business getBusiness(Business business) throws ResponseException {
+    public Business getBusiness(Business business) {
         return businessRepository.findFirstByNameIgnoreCase(business.getName()).map(b -> {
             return b;
-        }).orElseThrow(() -> new ResponseException("Business name not found", HttpStatus.NOT_FOUND));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Business name not found"));
     }
 
     /**
@@ -55,22 +53,20 @@ public class BusinessService {
     /**
      * Validates the business creation data
      * @param business
-     * @throws ResponseException
      */
-    private void validateBusiness(Business business) throws ResponseException {
+    private void validateBusiness(Business business) {
         if (business.getName() == null)
-            throw new ResponseException("Business name is required");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Business name is required");
 
         if (business.getName().length() < 5 || business.getName().length() > 20)
-            throw new ResponseException("The business name should be between 5 and 20 characters");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The business name should be between 5 and 20 characters");
          
         if (!business.getName().matches("^[A-Za-z0-9]+$"))
-            throw new ResponseException("The business name can contain only characters and numbers");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The business name can contain only characters and numbers");
         
 
         if (businessRepository.findFirstByNameIgnoreCase(business.getName()).isPresent())
-            throw new ResponseException("Business name taked");
-
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Business name taked");
         // Schedule validation
         business.getSchedule().validate();
     }
@@ -79,9 +75,8 @@ public class BusinessService {
      * Creates or updates a new business
      * @param business
      * @return Business
-     * @throws ResponseException
      */
-    public Business addBusiness(Business business) throws ResponseException{
+    public Business addBusiness(Business business) {
         this.validateBusiness(business);
         return this.businessRepository.save(business);
     }
@@ -95,12 +90,11 @@ public class BusinessService {
      * @param start
      * @param end
      * @return Business
-     * @throws ResponseException
      */
-    public Business getBusinessByNameWithReservations(String name, Date start, Date end) throws ResponseException {
+    public Business getBusinessByNameWithReservations(String name, Date start, Date end) {
         return businessRepository.findByNameAndReservationDate(name, start, end).map(b -> {
             return b;
-        }).orElseThrow(()-> new ResponseException("Bussines not found"));
+        }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bussines not found"));
     }
 
     /**
@@ -108,12 +102,11 @@ public class BusinessService {
      * @param name
      * @param sub
      * @return Business
-     * @throws ResponseException
      */
-    public Business getBusinessByNameAndUserSub(String name, String sub) throws ResponseException {
+    public Business getBusinessByNameAndUserSub(String name, String sub) {
         return this.businessRepository.findByNameAndUser_Sub(name, sub).map(b -> {
             return b;
-        }).orElseThrow(()-> new ResponseException("Bussines not found"));
+        }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bussines not found"));
     }
 
 }

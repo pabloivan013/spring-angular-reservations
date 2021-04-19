@@ -8,12 +8,13 @@ import com.backend.reservations.business.Business;
 import com.backend.reservations.business.BusinessService;
 import com.backend.reservations.reservation.Reservation;
 import com.backend.reservations.reservation.ReservationService;
-import com.backend.reservations.utils.ResponseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @Transactional
@@ -41,12 +42,11 @@ public class UserService {
      * Returns a User by his sub or throw exception if not found
      * @param user
      * @return User
-     * @throws ResponseException
      */
-    public User getUser(User user) throws ResponseException {
+    public User getUser(User user)  {
         return userRepository.findBySub(user.getSub()).map( u -> {
             return u;
-        }).orElseThrow(() -> new ResponseException("User not found"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     /**
@@ -69,9 +69,8 @@ public class UserService {
      * @param user
      * @param business
      * @return Business
-     * @throws ResponseException
      */
-    public Business addUserBusiness(User user, Business business) throws ResponseException{
+    public Business addUserBusiness(User user, Business business) {
         User _user = this.getUser(user); 
         business.setUser(_user);
         return this.businessService.addBusiness(business);
@@ -86,10 +85,9 @@ public class UserService {
      * Returns all the businesses of a user
      * @param user
      * @return Set<Business>
-     * @throws ResponseException
      */
     @Transactional(readOnly = true)
-    public Set<Business> getUserBusiness(User user) throws ResponseException {
+    public Set<Business> getUserBusiness(User user) {
         return businessService.getBusinessByUserSub(user.getSub());
         //return this.getUser(user).getBusiness();
     }
@@ -121,9 +119,8 @@ public class UserService {
      * @param reservation
      * @param business
      * @return Reservation
-     * @throws ResponseException
      */
-    public Reservation addUserReservation(User user, Reservation reservation, Business business) throws ResponseException {
+    public Reservation addUserReservation(User user, Reservation reservation, Business business) {
         User _user = this.getUser(user);
         Business _business = businessService.getBusiness(business);
         reservation.setUser(_user);
@@ -135,10 +132,9 @@ public class UserService {
      * Returns the user personal reservations
      * @param user
      * @return Set<Reservation>
-     * @throws ResponseException
      */
     @Transactional(readOnly = true)
-    public Set<Reservation> getUserReservations(User user) throws ResponseException {
+    public Set<Reservation> getUserReservations(User user) {
         return reservationService.getReservationsByUserSub(user.getSub());
     }
 
@@ -148,14 +144,13 @@ public class UserService {
     /**
      * Validates the user data to be created
      * @param username
-     * @throws ResponseException
      */
-    public void validateUsername(String username) throws ResponseException {
+    public void validateUsername(String username) {
         if (username == null) 
-            throw new ResponseException("username not provided");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "username not provided");
         
         if (username.length() < USERNAME_MIN_LENGTH || username.length() > USERNAME_MAX_LENGTH ) 
-            throw new ResponseException(String.format(
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
                                         "username length should be between %d and %d characters"
                                         ,USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
                                         );
@@ -165,16 +160,15 @@ public class UserService {
      * Creates or updates a user by his username, throw exception if is already taked
      * @param user
      * @return User
-     * @throws ResponseException
      */
-    public User createUpdateUserByName(User user) throws ResponseException {
+    public User createUpdateUserByName(User user) {
         String username = user.getUsername();
         this.validateUsername(username);
 
         // Verify if username already exists
         Optional<User> userData = userRepository.findByUsername(username);
         if (userData.isPresent())
-            throw new ResponseException("Username already taked");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taked");
         
         Optional<User> userSub = userRepository.findBySub(user.getSub());
         if (userSub.isPresent()) 

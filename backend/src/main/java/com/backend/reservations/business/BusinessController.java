@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.backend.reservations.reservation.Reservation;
 import com.backend.reservations.reservation.ReservationService;
-import com.backend.reservations.utils.ResponseException;
 import com.backend.reservations.utils.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -40,11 +39,10 @@ public class BusinessController {
      * 
      * @param name
      * @return ResponseEntity<Business>
-     * @throws ResponseException
      */
     @GetMapping("/business/{name}")
     @JsonView(View.Public.class)
-    public ResponseEntity<Business> getBusiness(@PathVariable String name) throws ResponseException {
+    public ResponseEntity<Business> getBusiness(@PathVariable String name) {
         Business _business = new Business();
         _business.setName(name);
         _business = this.businessService.getBusiness(_business);

@@ -3,13 +3,14 @@ package com.backend.reservations.reservation;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.backend.reservations.utils.ResponseException;
 import com.backend.reservations.utils.models.Schedule;
 import com.backend.reservations.utils.models.WeekDay;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @Transactional
@@ -18,13 +19,13 @@ public class ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
 
-    public void validateReservation(Reservation reservation) throws ResponseException {
+    public void validateReservation(Reservation reservation) {
        
         if (reservation.getReservedAt() == null)
-            throw new ResponseException("The reservation date should not be null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The reservation date should not be null");
 
         if (reservation.getDay() == null) 
-            throw new ResponseException("The day should not be null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The day should not be null");
 
         Schedule schedule = reservation.business.getSchedule();
         LocalDateTime reservedAt = reservation.truncateReservedAt();
@@ -35,10 +36,10 @@ public class ReservationService {
         WeekDay _weekDay = WeekDay.valueOf(dayOfReservation);
 
         if (reservation.getDay().getValue() != _weekDay.getValue())
-            throw new ResponseException("The weekday provided and the date does not match");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The weekday provided and the date does not match");
 
         if (!reservation.isValid(schedule))
-            throw new ResponseException("Reservation date not valid");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation date not valid");
         
         if (!this.reservationRepository.FindByDateAndBusinessName(
                                         reservation.business.getName(),
@@ -46,7 +47,7 @@ public class ReservationService {
                                         reservedAt
                                         ).isEmpty()
             ) 
-            throw new ResponseException("Reservation already taked");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Reservation already taked");
         
     }
 
@@ -54,9 +55,8 @@ public class ReservationService {
      * Creates a new reservation
      * @param reservation
      * @return Reservation
-     * @throws ResponseException
      */
-    public Reservation addReservation(Reservation reservation) throws ResponseException {
+    public Reservation addReservation(Reservation reservation) {
         this.validateReservation(reservation);
         return reservationRepository.save(reservation);
     }

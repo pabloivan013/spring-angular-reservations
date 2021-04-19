@@ -2,10 +2,12 @@ package com.backend.reservations.utils.models;
 
 import java.util.*;
 
-import com.backend.reservations.utils.ResponseException;
 import com.backend.reservations.utils.View;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 
 public class Schedule {
@@ -21,7 +23,7 @@ public class Schedule {
     public Schedule() {
     }
 
-    public void validate() throws ResponseException{
+    public void validate() {
         
         Set<WeekDay> _weekDays = new HashSet<>();
 
@@ -37,7 +39,7 @@ public class Schedule {
 
         for(WeekDay wk: WeekDay.values()){
             if (!_weekDays.contains(wk)) 
-                throw new ResponseException("The schedule is not containing the " + wk + " day");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The schedule is not containing the " + wk + " day");
         }
 
     }
