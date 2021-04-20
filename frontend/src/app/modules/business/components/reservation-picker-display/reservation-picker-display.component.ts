@@ -13,17 +13,22 @@ import { UserService } from 'src/app/services/user.service';
 import { MS_PER_MINUTE } from '../reservation-times/reservation-times.component';
 
 /**
- * Set localDate from local time to business time
+ * This function could be used to:
+ * - Set localDate from local time to business time (displayed on view considering gmt value) (used in filter function)
+ * - Set localDate time UTC to be the same that the business UTC
+ *   Taking off the local offset to make it 00:00 Z
+ *   Adding the business offset to match his original UTC Z time
  * @param localDate 
  * @param businessOffset 
  * @param localOffset 
  * @returns 
  */
-export function changeDateTimezone(localDate: Date, businessOffset: number, localOffset: number) {
-  // Add current timezone offset to take it to UTC 
-  localDate.setTime(localDate.getTime() + (localOffset * MS_PER_MINUTE))
-  // Substract business offset to take it to his timezone
-  localDate.setTime(localDate.getTime() - (businessOffset * MS_PER_MINUTE))
+export function changeDateTimezone(localDate: Date, offsetToSubstract: number, offsetToAdd: number) {
+
+  localDate.setTime(localDate.getTime() - (offsetToSubstract * MS_PER_MINUTE))
+ 
+  localDate.setTime(localDate.getTime() + (offsetToAdd * MS_PER_MINUTE))
+
   return localDate.getTime()
 }
 
@@ -153,7 +158,7 @@ export class ReservationPickerDisplayComponent implements OnInit {
     let start = new Date(this.date)
 
     // Set start UTC to the business UTC
-    // UTC - local offset sets UTC to 00:00
+    // UTC - Subtracts the local offset to set UTC time to 00:00Z
     // Adds the business offset to match the business UTC
     changeDateTimezone(start, start.getTimezoneOffset(), this.schedule.offset)
 
