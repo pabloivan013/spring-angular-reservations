@@ -23,9 +23,9 @@ import { MS_PER_MINUTE } from '../reservation-times/reservation-times.component'
  * @param localOffset 
  * @returns 
  */
-export function changeDateTimezone(localDate: Date, offsetToSubstract: number, offsetToAdd: number) {
+export function changeDateTimezone(localDate: Date, offsetToSubtract: number, offsetToAdd: number) {
 
-  localDate.setTime(localDate.getTime() - (offsetToSubstract * MS_PER_MINUTE))
+  localDate.setTime(localDate.getTime() - (offsetToSubtract * MS_PER_MINUTE))
  
   localDate.setTime(localDate.getTime() + (offsetToAdd * MS_PER_MINUTE))
 
